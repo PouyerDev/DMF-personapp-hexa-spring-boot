@@ -5,6 +5,7 @@ import java.time.LocalDate;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import co.edu.javeriana.as.personapp.common.annotations.Mapper;
+import co.edu.javeriana.as.personapp.domain.Gender;
 import co.edu.javeriana.as.personapp.domain.Person;
 import co.edu.javeriana.as.personapp.domain.Profession;
 import co.edu.javeriana.as.personapp.domain.Study;
@@ -54,11 +55,11 @@ public class EstudiosMapperMongo {
 
 	public Study fromAdapterToDomain(EstudiosDocument estudiosDocument) {
 		Study study = new Study();
-		study.setPerson(personaMapperMongo.fromAdapterToDomain(estudiosDocument.getPrimaryPersona()));
-		study.setProfession(profesionMapperMongo.fromAdapterToDomain(estudiosDocument.getPrimaryProfesion()));
+		study.setPerson(validateOwner(estudiosDocument.getPrimaryPersona()));
+		study.setProfession(validateProfession(estudiosDocument.getPrimaryProfesion()));
 		study.setGraduationDate(validateGraduationDate(estudiosDocument.getFecha()));
 		study.setUniversityName(validateUniversityName(estudiosDocument.getUniver()));
-		return null;
+		return study;
 	}
 
 	private LocalDate validateGraduationDate(LocalDate fecha) {
@@ -67,5 +68,29 @@ public class EstudiosMapperMongo {
 
 	private String validateUniversityName(String univer) {
 		return univer != null ? univer : "";
+	}
+
+		private @NonNull Person validateOwner(PersonaDocument duenio) {
+		Person owner = new Person();
+		owner.setIdentification(duenio.getId());
+		owner.setFirstName(duenio.getNombre());
+		owner.setLastName(duenio.getApellido());
+		//si es genero MALE PONER gender.MALE
+		if("M".equals(duenio.getGenero())) {
+			owner.setGender(Gender.MALE);
+		}
+		else{
+			owner.setGender(Gender.FEMALE);
+		}
+		owner.setAge(duenio.getEdad());
+		return owner;
+	}
+
+	private @NonNull Profession validateProfession(ProfesionDocument prof) {
+		Profession profession = new Profession();
+		profession.setIdentification(prof.getId());
+		profession.setDescription(prof.getDes());
+		profession.setName(prof.getNom());
+		return profession;
 	}
 }

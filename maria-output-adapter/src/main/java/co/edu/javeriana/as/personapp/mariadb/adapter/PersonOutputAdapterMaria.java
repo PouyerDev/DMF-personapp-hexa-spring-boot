@@ -29,28 +29,28 @@ public class PersonOutputAdapterMaria implements PersonOutputPort {
 
 	@Override
 	public Person save(Person person) {
-		log.debug("Into save on Adapter MariaDB");
+		//debug("Into save on Adapter MariaDB");
 		PersonaEntity persistedPersona = personaRepositoryMaria.save(personaMapperMaria.fromDomainToAdapter(person));
 		return personaMapperMaria.fromAdapterToDomain(persistedPersona);
 	}
 
 	@Override
 	public Boolean delete(Integer identification) {
-		log.debug("Into delete on Adapter MariaDB");
+		//debug("Into delete on Adapter MariaDB");
 		personaRepositoryMaria.deleteById(identification);
 		return personaRepositoryMaria.findById(identification).isEmpty();
 	}
 
 	@Override
 	public List<Person> find() {
-		log.debug("Into find on Adapter MariaDB");
+		//debug("Into find on Adapter MariaDB");
 		return personaRepositoryMaria.findAll().stream().map(personaMapperMaria::fromAdapterToDomain)
 				.collect(Collectors.toList());
 	}
 
 	@Override
 	public Person findById(Integer identification) {
-		log.debug("Into findById on Adapter MariaDB");
+		//debug("Into findById on Adapter MariaDB");
 		if (personaRepositoryMaria.findById(identification).isEmpty()) {
 			return null;
 		} else {

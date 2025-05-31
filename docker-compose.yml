@@ -1,0 +1,42 @@
+services:
+  mariadb:
+    image: mariadb:latest
+    container_name: mariadb-container
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword
+    ports:
+      - "3307:3306"
+    volumes:
+      - ./scripts:/docker-entrypoint-initdb.d
+    networks:
+      - my_network
+
+  mongodb:
+    image: mongo:latest
+    container_name: mongodb-container
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: persona_db
+      MONGO_INITDB_ROOT_PASSWORD: persona_db
+      MONGO_INITDB_DATABASE: persona_db
+    ports:
+      - "27017:27017"
+    volumes:
+      - ./scripts:/docker-entrypoint-initdb.d
+    networks:
+      - my_network
+
+  rest-api:  
+    container_name: rest-container
+    build:
+      context: .  
+      dockerfile: Dockerfile  
+    ports:
+      - "3000:3000"  
+    networks:
+      - my_network
+    depends_on:
+      - mariadb  
+
+networks:
+  my_network:
+    driver: bridge

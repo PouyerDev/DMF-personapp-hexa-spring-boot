@@ -31,7 +31,6 @@ public class PersonUseCase implements PersonInputPort {
 
 	@Override
 	public Person create(Person person) {
-		log.debug("Into create on Application Domain");
 		return personPersintence.save(person);
 	}
 
@@ -55,7 +54,6 @@ public class PersonUseCase implements PersonInputPort {
 
 	@Override
 	public List<Person> findAll() {
-		log.info("Output: " + personPersintence.getClass());
 		return personPersintence.find();
 	}
 

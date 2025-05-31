@@ -16,16 +16,12 @@ public class PersonAppCli implements CommandLineRunner {
 	private MenuPrincipal menuPrincipal;
 
 	public static void main(String[] args) {
-		log.info("Starting PersonAppCli ...");
 		SpringApplication.run(PersonAppCli.class, args);
-		log.info("Started PersonAppCli OK");
 	}
 
 	@Override
 	public void run(String... args) throws Exception {
-		log.info("EXECUTING : command line runner");
 		menuPrincipal.inicio();
-		log.info("FINISHED : command line runner");
 	}
 
 }
